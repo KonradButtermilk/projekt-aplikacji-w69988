@@ -3,9 +3,51 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Zasoby\BishopB.png" />
+    <None Remove="Zasoby\BishopW.png" />
+    <None Remove="Zasoby\Board.png" />
+    <None Remove="Zasoby\CursorB.cur" />
+    <None Remove="Zasoby\CursorW.cur" />
+    <None Remove="Zasoby\icon.ico" />
+    <None Remove="Zasoby\KingB.png" />
+    <None Remove="Zasoby\KingW.png" />
+    <None Remove="Zasoby\KnightB.png" />
+    <None Remove="Zasoby\KnightW.png" />
+    <None Remove="Zasoby\PawnB.png" />
+    <None Remove="Zasoby\PawnW.png" />
+    <None Remove="Zasoby\QueenB.png" />
+    <None Remove="Zasoby\QueenW.png" />
+    <None Remove="Zasoby\RookB.png" />
+    <None Remove="Zasoby\RookW.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SzachowaLogika\SzachowaLogika.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Zasoby\BishopB.png" />
+    <Resource Include="Zasoby\BishopW.png" />
+    <Resource Include="Zasoby\Board.png" />
+    <Resource Include="Zasoby\CursorB.cur" />
+    <Resource Include="Zasoby\CursorW.cur" />
+    <Resource Include="Zasoby\icon.ico" />
+    <Resource Include="Zasoby\KingB.png" />
+    <Resource Include="Zasoby\KingW.png" />
+    <Resource Include="Zasoby\KnightB.png" />
+    <Resource Include="Zasoby\KnightW.png" />
+    <Resource Include="Zasoby\PawnB.png" />
+    <Resource Include="Zasoby\PawnW.png" />
+    <Resource Include="Zasoby\QueenB.png" />
+    <Resource Include="Zasoby\QueenW.png" />
+    <Resource Include="Zasoby\RookB.png" />
+    <Resource Include="Zasoby\RookW.png" />
+  </ItemGroup>
 
 </Project>
