@@ -1,0 +1,44 @@
+# Ignoruj folder .vs generowany przez Visual Studio
+.vs/
+
+# Ignoruj foldery kompilacji
+bin/
+obj/
+
+# Ignoruj pliki użytkownika i ustawień środowiska
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignoruj pliki wynikowe i tymczasowe
+*.cache
+*.log
+*.nupkg
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.dll
+*.exe
+
+# Ignoruj pliki ReSharper (jeśli używasz)
+_ReSharper.*
+*.ReSharper
+
+# Ignoruj pliki Rider (jeśli używasz)
+.idea/
+*.idea
+
+# Ignoruj pliki pakietów NuGet
+packages/
+.nuget/
+NuGet.exe
+NuGet.Config
+
+# Ignoruj pliki testów
+TestResults/
+*.trx
+
+# Ignoruj pliki macOS
+.DS_Store
