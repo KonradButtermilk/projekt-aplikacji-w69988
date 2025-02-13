@@ -29,14 +29,6 @@ namespace SzachowaLogika
         {
             return new Kierunek(scalar * dir.RowDelta, scalar * dir.ColumnDelta);
         }
-        //Biorę pozycję i kierunek jako parametry i zwraca je jako jeden krok w wybranym kierunku
-        public static Pozycja operator + (Pozycja pos, Kierunek dir )
-        {
-            return new Pozycja(pos.Row + dir.RowDelta, pos.Column + dir.ColumnDelta);
-        }
     }
 }
-/* Przykład
- * Pozycja from = new Pozycja(0, 4);
- * Pozycja to = from + 3 * Kierunek.SouthEast;
- */
+
