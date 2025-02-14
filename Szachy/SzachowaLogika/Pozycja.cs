@@ -42,7 +42,7 @@
             return !(left == right);
         }
         //Biorę pozycję i kierunek jako parametry i zwraca je jako jeden krok w wybranym kierunku
-        public static Pozycja operator +(Pozycja pos, Kierunek dir)
+        public static Pozycja operator +(Pozycja pos, Direction dir)
         {
             return new Pozycja(pos.Row + dir.RowDelta, pos.Column + dir.ColumnDelta);
         }
