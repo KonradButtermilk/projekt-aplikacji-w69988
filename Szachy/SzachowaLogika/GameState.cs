@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace SzachowaLogika
 {
-    public class StanGry
+    public class GameState
     {
-        public Plansza Plansza { get; }
+        public Board Board { get; }
         public Player CurrentPlayer { get; private set; }
 
-        public StanGry(Player player, Plansza plansza)
+        public GameState(Player player, Board board)
         {
             CurrentPlayer = player;
-            Plansza = plansza; 
+            Board = board;
         }
     }
 }

@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace SzachowaLogika
 {
-    public class Bishop : Bierka
+    public class Pawn : Piece
     {
-        public override RodzajBierek Type => RodzajBierek.Bishop;
+        public override RodzajBierek Type => RodzajBierek.Pawn;
         public override Player Color { get; }
 
-        public Bishop(Player color)
+        public Pawn(Player color)
         {
-            Color = color;
+            Color = color; 
         }
-        public override Bierka Copy()
+        public override Piece Copy()
         {
-            Bishop copy = new Bishop(Color);
+            Pawn copy = new Pawn(Color);
             copy.HasMoved = HasMoved;
             return copy;
         }

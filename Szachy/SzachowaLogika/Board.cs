@@ -6,30 +6,30 @@ using System.Threading.Tasks;
 
 namespace SzachowaLogika
 {
-    public class Plansza
+    public class Board
     {
-        private readonly Bierka[,] Bierki = new Bierka[8, 8];   //tablica jest prywatna, więc trzeba zrobić do niej dostęp za pomocą row i column
+        private readonly Piece[,] Pieces = new Piece[8, 8];   //tablica jest prywatna, więc trzeba zrobić do niej dostęp za pomocą row i column
 
-        public Bierka this[int row, int col]
+        public Piece this[int row, int col]
         {
-            get { return Bierki[row, col]; }
-            set { Bierki[row, col] = value; }
+            get { return Pieces[row, col]; }
+            set { Pieces[row, col] = value; }
         }
 
-        public Bierka this[Pozycja pos]
+        public Piece this[Pozycja pos]
         {
             get { return this[pos.Row, pos.Column]; }
             set { this[pos.Row, pos.Column] = value; }
         }
-    
-    public static Plansza Initial()
+
+        public static Board Initial()
         {
-            Plansza plansza = new Plansza();
-            plansza.AddStartBierki();
-            return plansza;
+            Board board = new Board();
+            board.AddStartPieces();
+            return board;
         }
 
-        private void AddStartBierki()
+        private void AddStartPieces()
         {
             this[0, 0] = new Rook(Player.Black);
             this[0, 1] = new Knight(Player.Black);
@@ -70,3 +70,4 @@ namespace SzachowaLogika
         }
     }
 }
+

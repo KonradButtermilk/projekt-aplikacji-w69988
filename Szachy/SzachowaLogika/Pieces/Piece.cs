@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace SzachowaLogika
 {
     // Klasa musi być abstract, bo nie reprezentuje konkretnej bierki
-    public abstract class Bierka
+    public abstract class Piece
     {
         public abstract RodzajBierek Type { get; }
         public abstract Player Color { get; }
         public bool HasMoved { get; set; } = false;
 
-        public abstract Bierka Copy();
+        public abstract Piece Copy();
     }
 }

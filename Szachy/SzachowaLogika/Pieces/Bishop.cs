@@ -6,19 +6,18 @@ using System.Threading.Tasks;
 
 namespace SzachowaLogika
 {
-    public class Rook : Bierka
+    public class Bishop : Piece
     {
-        public override RodzajBierek Type => RodzajBierek.Rook;
+        public override RodzajBierek Type => RodzajBierek.Bishop;
         public override Player Color { get; }
 
-        public Rook(Player color)
+        public Bishop(Player color)
         {
             Color = color;
         }
-
-        public override Bierka Copy()
+        public override Piece Copy()
         {
-            Rook copy = new Rook(Color);
+            Bishop copy = new Bishop(Color);
             copy.HasMoved = HasMoved;
             return copy;
         }

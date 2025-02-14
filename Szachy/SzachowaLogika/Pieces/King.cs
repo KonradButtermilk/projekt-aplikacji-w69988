@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 
 namespace SzachowaLogika
 {
-    public class Pawn : Bierka
+    public class King : Piece
     {
-        public override RodzajBierek Type => RodzajBierek.Pawn;
+        public override RodzajBierek Type => RodzajBierek.King;
         public override Player Color { get; }
 
-        public Pawn(Player color)
+        public King(Player color)
         {
-            Color = color; 
+            Color = color;
         }
-        public override Bierka Copy()
+
+        public override Piece Copy()
         {
-            Pawn copy = new Pawn(Color);
+            King copy = new King(Color);
             copy.HasMoved = HasMoved;
             return copy;
         }
