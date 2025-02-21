@@ -1,25 +1,26 @@
-﻿using System;
+﻿using ChessLogic.Pieces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SzachowaLogika
+namespace ChessLogic
 {
     public class Board
     {
-        private readonly Piece[,] Pieces = new Piece[8, 8];   //tablica jest prywatna, więc trzeba zrobić do niej dostęp za pomocą row i column
+        private readonly Piece[,] pieces = new Piece[8, 8];
 
-        public Piece this[int row, int col]
+        public Piece this[int row, int column]
         {
-            get { return Pieces[row, col]; }
-            set { Pieces[row, col] = value; }
+            get => pieces[row, column];
+            set => pieces[row, column] = value;
         }
 
-        public Piece this[Pozycja pos]
+        public Piece this[Position position]
         {
-            get { return this[pos.Row, pos.Column]; }
-            set { this[pos.Row, pos.Column] = value; }
+            get => pieces[position.Row, position.Column];
+            set => pieces[position.Row, position.Column] = value;
         }
 
         public static Board Initial()
@@ -27,10 +28,12 @@ namespace SzachowaLogika
             Board board = new Board();
             board.AddStartPieces();
             return board;
+
         }
 
         private void AddStartPieces()
         {
+            // Pieces black
             this[0, 0] = new Rook(Player.Black);
             this[0, 1] = new Knight(Player.Black);
             this[0, 2] = new Bishop(Player.Black);
@@ -40,8 +43,7 @@ namespace SzachowaLogika
             this[0, 6] = new Knight(Player.Black);
             this[0, 7] = new Rook(Player.Black);
 
-            // Ustawienie białych figur
-
+            //Pieces white
             this[7, 0] = new Rook(Player.White);
             this[7, 1] = new Knight(Player.White);
             this[7, 2] = new Bishop(Player.White);
@@ -50,24 +52,25 @@ namespace SzachowaLogika
             this[7, 5] = new Bishop(Player.White);
             this[7, 6] = new Knight(Player.White);
             this[7, 7] = new Rook(Player.White);
-            // Ustawienie pionków
 
-            for (int i = 0; i < 8; i++)
 
+            // Pawns black and white
+            for (int column = 0; column < 8; column++)
             {
-                this[1, i] = new Pawn(Player.Black);
-                this[6, i] = new Pawn(Player.White);
+                this[1, column] = new Pawn(Player.Black);
+                this[6, column] = new Pawn(Player.White);
             }
 
         }
-        public static bool IsInside(Pozycja pos)
+
+        public static bool IsInside(Position position)
         {
-            return pos.Row >= 0 && pos.Row < 8 && pos.Column >= 0 && pos.Column < 8;
+            return position.Row >= 0 && position.Row < 8 && position.Column >= 0 && position.Column < 8;
         }
-        public bool IsEmpty(Pozycja pos)
+
+        public bool IsEmpty(Position position)
         {
-            return this[pos] == null;
+            return this[position] == null;
         }
     }
 }
-

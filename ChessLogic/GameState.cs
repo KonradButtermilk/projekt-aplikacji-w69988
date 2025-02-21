@@ -1,39 +1,41 @@
-﻿using System;
+﻿using ChessLogic.Moves;
+using ChessLogic.Pieces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SzachowaLogika
+namespace ChessLogic
 {
     public class GameState
     {
         public Board Board { get; set; }
         public Player CurrentPalyer { get; private set; }
-
+        
         public GameState(Player player, Board board)
         {
-
+         
             CurrentPalyer = player;
             Board = board;
         }
 
-        public IEnumerable<Move> LegalMovesForPieces(Pozycja pozycja)
+        public IEnumerable<Move> LegalMovesForPieces(Position position)
         {
-            if (Board.IsEmpty(pozycja) || Board[pozycja].Color != CurrentPalyer)
+            if(Board.IsEmpty(position) || Board[position].Color != CurrentPalyer)
             {
                 return Enumerable.Empty<Move>();
             }
 
-            Piece piece = Board[pozycja];
-            return piece.GetMoves(pozycja, Board);
+            Piece piece = Board[position];
+            return piece.GetMoves(position, Board);
         }
 
         public void MakeMove(Move move)
         {
-            move.Execute(Board);
+           move.Execute(Board);
             CurrentPalyer = CurrentPalyer.Opponent();
-        }
+        }   
 
     }
 }

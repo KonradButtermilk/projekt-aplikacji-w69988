@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SzachowaLogika
+namespace ChessLogic.Moves
 {
     public abstract class Move
     {
         public abstract MoveType Type { get; }
-        public abstract Pozycja FromPoz { get; }
-        public abstract Pozycja ToPoz { get; }
-        public abstract void Execute ( Board board );
+        public abstract Position FromPosition { get; }  
+        public abstract Position ToPosition { get; }
+
+        public abstract void Execute(Board board);
     }
 }

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ChessLogic.Moves;
 
-namespace SzachowaLogika
+namespace ChessLogic.Pieces
 {
-    public class King : Piece
+    public class King: Piece
     {
-        public override RodzajBierek Type => RodzajBierek.King;
+        public override PieceType Type => PieceType.King;
         public override Player Color { get; }
 
         private static readonly Direction[] directions = new Direction[]
@@ -37,29 +33,28 @@ namespace SzachowaLogika
             return copy;
         }
 
-        private IEnumerable<Pozycja> MovePozycjas(Pozycja from, Board board)
+        private IEnumerable<Position> MovePositions(Position from, Board board)
         {
             foreach (Direction direction in directions)
             {
-                Pozycja to = from + direction;
-                if (!Board.IsInside(to))
-                {
+                Position to = from + direction;
+                if (!Board.IsInside(to)) {
                     continue;
                 }
 
-                if (board.IsEmpty(to) || board[to].Color != Color)
+                if(board.IsEmpty(to) || board[to].Color != Color)
                 {
                     yield return to;
                 }
             }
         }
 
-        public override IEnumerable<Move> GetMoves(Pozycja from, Board board)
+        public override IEnumerable<Move> GetMoves(Position from, Board board)
         {
-            foreach (Pozycja to in MovePozycjas(from, board))
+           foreach(Position to in MovePositions(from, board))
             {
-                yield return new NormalMove(from, to);
-            }
+               yield return new NormalMove(from, to);
+           }
         }
     }
 }
