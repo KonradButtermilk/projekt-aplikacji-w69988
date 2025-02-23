@@ -7,6 +7,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ChessLogic;
+using System.Linq; // Dodane dla FirstOrDefault
+
 namespace ChessUI
 {
     public partial class MainWindow : Window
@@ -16,6 +18,7 @@ namespace ChessUI
         private readonly Image[,] pieceImages = new Image[8, 8];
         private MoveHistory moveHistory;
         private GameState gameState;
+        private Position? selectedPosition = null; // Używane do śledzenia wybranego pionka
 
         public MainWindow()
         {
@@ -127,8 +130,91 @@ namespace ChessUI
 
         private void BoardGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            // Logika obsługi kliknięć
+            Point clickPoint = e.GetPosition(BoardGrid);
+            int col = (int)(clickPoint.X / 100);
+            int row = (int)(clickPoint.Y / 100);
+            if (col >= 0 && col < 8 && row >= 0 && row < 8)
+            {
+                Position pos = new Position(row, col);
+                if (selectedPosition == null)
+                {
+                    Piece piece = gameState.Board[pos];
+                    if (piece != null && piece.Color == gameState.CurrentPlayer)
+                    {
+                        selectedPosition = pos;
+                        ClearHighlights();
+                        HighlightSquare(pos);
+                        var moves = gameState.LegalMovesForPieces(pos);
+                        foreach (var move in moves)
+                        {
+                            HighlightSquare(move.ToPosition);
+                        }
+                    }
+                }
+                else
+                {
+                    if (pos == selectedPosition.Value)
+                    {
+                        selectedPosition = null;
+                        ClearHighlights();
+                    }
+                    else
+                    {
+                        Piece piece = gameState.Board[pos];
+                        if (piece != null && piece.Color == gameState.CurrentPlayer)
+                        {
+                            selectedPosition = pos;
+                            ClearHighlights();
+                            HighlightSquare(pos);
+                            var moves = gameState.LegalMovesForPieces(pos);
+                            foreach (var move in moves)
+                            {
+                                HighlightSquare(move.ToPosition);
+                            }
+                        }
+                        else
+                        {
+                            Position from = selectedPosition.Value;
+                            var moves = gameState.LegalMovesForPieces(from);
+                            var move = moves.FirstOrDefault(m => m.ToPosition == pos);
+                            if (move != null)
+                            {
+                                gameState.MakeMove(move); // Użycie MakeMove zamiast bezpośredniego ustawiania właściwości
+                                moveHistory.AddMove(move);
+                                DrawBoard(gameState.Board);
+                                selectedPosition = null;
+                                ClearHighlights();
+                                UpdateButtons();
+                            }
+                            else
+                            {
+                                selectedPosition = null;
+                                ClearHighlights();
+                            }
+                        }
+                    }
+                }
+            }
         }
+
+        private void HighlightSquare(Position pos)
+        {
+            int index = pos.Row * 8 + pos.Column;
+            var highlight = HighlightGrid.Children[index] as Rectangle;
+            highlight.Visibility = Visibility.Visible;
+        }
+
+        private void ClearHighlights()
+        {
+            foreach (var child in HighlightGrid.Children)
+            {
+                if (child is Rectangle rect)
+                {
+                    rect.Visibility = Visibility.Hidden;
+                }
+            }
+        }
+
         private void LoadGameMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var historyWindow = new GameHistoryWindow();
@@ -137,6 +223,7 @@ namespace ChessUI
                 LoadGame(historyWindow.SelectedGame);
             }
         }
+
         private void PrevMoveButton_Click(object sender, RoutedEventArgs e)
         {
             moveHistory.StepBackward();

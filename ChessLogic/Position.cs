@@ -32,5 +32,30 @@
         }
 
         public override string ToString() => $"{(char)('a' + Column)}{8 - Row}";
+
+        // Dodane operatory równości
+        public static bool operator ==(Position a, Position b)
+        {
+            return a.Row == b.Row && a.Column == b.Column;
+        }
+
+        public static bool operator !=(Position a, Position b)
+        {
+            return !(a == b);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Position pos)
+            {
+                return this == pos;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Row, Column);
+        }
     }
 }
