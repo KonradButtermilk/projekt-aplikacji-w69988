@@ -16,7 +16,7 @@ namespace ChessUI
             {PieceType.Rook, LoadImage("Assets/wR.png")},     
             {PieceType.Knight, LoadImage("Assets/wN.png")},   
             {PieceType.Queen, LoadImage("Assets/wQ.png")},    
-            {PieceType.King, LoadImage("Assets/wK.png")},     
+            {PieceType.King, LoadImage("Assets/wK.png")},     // Obraz króla
         };
 
         // Słownik przechowujący źródła obrazów czarnych figur
