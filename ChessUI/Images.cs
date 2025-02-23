@@ -14,7 +14,8 @@ namespace ChessUI
         {
             {PieceType.Pawn, LoadImage("Assets/wP.png")},    
             {PieceType.Rook, LoadImage("Assets/wR.png")},     
-            {PieceType.Knight, LoadImage("Assets/wN.png")},   
+            {PieceType.Knight, LoadImage("Assets/wN.png")},
+            {PieceType.Bishop, LoadImage("Assets/wB.png")},
             {PieceType.Queen, LoadImage("Assets/wQ.png")},    
             {PieceType.King, LoadImage("Assets/wK.png")},     // Obraz króla
         };
