@@ -14,7 +14,7 @@
 
     <Window.Resources>
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
-            <!-- Styl pozostaje bez zmian -->
+            <!-- Definicja stylu dla przycisków, można dodać właściwości stylu -->
         </Style>
     </Window.Resources>
 
@@ -22,6 +22,7 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Plik">
                 <MenuItem Header="Wczytaj partię" Click="LoadGameMenuItem_Click"/>
+                <!-- Opcja menu do wczytywania gry -->
             </MenuItem>
         </Menu>
 
@@ -29,11 +30,13 @@
             <Grid x:Name="BoardGrid" Width="800" Height="800" MouseDown="BoardGrid_MouseDown">
                 <Grid.Background>
                     <ImageBrush ImageSource="Assets/Board.png"/>
+                    <!-- Tło szachownicy jako obraz -->
                 </Grid.Background>
 
                 <UniformGrid x:Name="HighlightGrid" Rows="8" Columns="8"/>
-                <UniformGrid x:Name="PieceGrid" Rows="8" Columns="8" 
-                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                <!-- Siatka na podświetlenia -->
+                <UniformGrid x:Name="PieceGrid" Rows="8" Columns="8" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <!-- Siatka na figury -->
             </Grid>
         </Viewbox>
 
@@ -43,10 +46,12 @@
                     Click="PrevMoveButton_Click"
                     Style="{StaticResource RoundedButtonStyle}"
                     MinWidth="120" Margin="5"/>
+            <!-- Przycisk do poprzedniego ruchu -->
             <Button x:Name="btnNext" Content="Następny ⮞" 
                     Click="NextMoveButton_Click"
                     Style="{StaticResource RoundedButtonStyle}"
                     MinWidth="120" Margin="5"/>
+            <!-- Przycisk do następnego ruchu -->
         </StackPanel>
     </DockPanel>
 </Window>

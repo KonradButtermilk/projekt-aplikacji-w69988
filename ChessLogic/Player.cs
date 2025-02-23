@@ -6,28 +6,28 @@ using System.Threading.Tasks;
 
 namespace ChessLogic
 {
+    // Enum reprezentujący gracza w szachach
     public enum Player
     {
-        None,
-        White,
-        Black
+        None,  // Brak gracza
+        White, // Biały gracz
+        Black  // Czarny gracz
     }
 
+    // Klasa rozszerzeń dla typu Player
     public static class PlayerExtensions
     {
+        // Metoda rozszerzająca zwracająca przeciwnika danego gracza
         public static Player Opponent(this Player player)
         {
-            //This a switch statement, it is like an if statement but more compact
+            // Instrukcja switch, działająca jak bardziej zwięzły if
             return player switch
             {
-                //If player is white, return black, if player is black, return white, else return none
+                // Jeśli gracz jest biały, zwróć czarnego; jeśli gracz jest czarny, zwróć białego; w przeciwnym razie zwróć brak gracza
                 Player.White => Player.Black,
-                //If player is black, return white, if player is white, return black, else return none
                 Player.Black => Player.White,
-                //If player is none, return none
                 _ => Player.None,
             };
         }
-
     }
 }

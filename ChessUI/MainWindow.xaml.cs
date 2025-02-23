@@ -136,7 +136,7 @@ namespace ChessUI
 
         private List<Move> ParseAlgebraicMoves(string moves, List<string> moveLog)
         {
-            // Parsowanie listy ruchów z notacji algebraicznej
+            // Parsowanie listy ruchów z notacji 
             var result = new List<Move>();
             string[] moveTokens = moves.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             Board tempBoard = gameState.Board.DeepCopy();
