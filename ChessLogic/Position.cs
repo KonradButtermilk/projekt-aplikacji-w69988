@@ -33,7 +33,6 @@
 
         public override string ToString() => $"{(char)('a' + Column)}{8 - Row}";
 
-        // Dodane operatory równości
         public static bool operator ==(Position a, Position b)
         {
             return a.Row == b.Row && a.Column == b.Column;
