@@ -1,6 +1,4 @@
-﻿using ChessLogic.Moves;
-
-namespace ChessLogic.Pieces
+﻿namespace ChessLogic
 {
     public class Pawn : Piece
     {
@@ -21,7 +19,10 @@ namespace ChessLogic.Pieces
                 forward = Direction.South;
             }
         }
-
+        public override Piece Clone()
+        {
+            return new Pawn(Color) { HasMoved = this.HasMoved };
+        }
         public override Piece Copy()
         {
             Pawn copy = new Pawn(Color);
@@ -29,14 +30,14 @@ namespace ChessLogic.Pieces
             return copy;
         }
 
-        private static bool CanMoveTo(Position position, Board board) { 
-        
-            return Board.IsInside(position) && board.IsEmpty(position);
+        private static bool CanMoveTo(Position position, Board board)
+        {
+            return Board.IsInside(position) && Board.IsEmpty(board, position);
         }
 
         private bool CanCaptureAt(Position position, Board board)
         {
-           if(!Board.IsInside(position) || board.IsEmpty(position))
+            if (!Board.IsInside(position) || Board.IsEmpty(board, position))
             {
                 return false;
             }

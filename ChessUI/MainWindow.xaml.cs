@@ -1,167 +1,154 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ChessLogic;
-using ChessLogic.Moves;
-using ChessLogic.Pieces;
-
 namespace ChessUI
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private const string ConnectionString =
+        @"Data Source=KONRADPC\SQLEXPRESS;Initial Catalog=ChessDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
         private readonly Image[,] pieceImages = new Image[8, 8];
-        private readonly Rectangle[,] highlights = new Rectangle[8, 8];
-        private readonly Dictionary<Position,Move> moveCache=new Dictionary<Position, Move>();
-
+        private MoveHistory moveHistory;
         private GameState gameState;
-        private Position selectedPosition = null;
 
         public MainWindow()
         {
             InitializeComponent();
             InitializeBoard();
-
-            gameState = new GameState(Player.White, Board.Initial());
-            DrawBoard(gameState.Board);
-            SetCursor(gameState.CurrentPalyer);
+            InitializeGame();
         }
 
         private void InitializeBoard()
         {
-
-
             for (int row = 0; row < 8; row++)
             {
-                for (int column = 0; column < 8; column++)
+                for (int col = 0; col < 8; col++)
                 {
                     Image image = new Image();
-                    pieceImages[row, column] = image;
-
+                    pieceImages[row, col] = image;
                     PieceGrid.Children.Add(image);
 
-                    Rectangle highlight = new Rectangle();
-                    highlights[row,column] = highlight;
+                    Rectangle highlight = new Rectangle
+                    {
+                        Fill = Brushes.Transparent,
+                        Stroke = Brushes.Yellow,
+                        StrokeThickness = 3,
+                        Visibility = Visibility.Hidden
+                    };
                     HighlightGrid.Children.Add(highlight);
-                    
-
                 }
             }
         }
 
-        private void DrawBoard(Board board) { 
-        
-            for(int row = 0;row < 8; row++)
+        private void InitializeGame()
+        {
+            gameState = new GameState(Player.White, Board.Initial());
+            moveHistory = new MoveHistory(gameState.Board);
+            DrawBoard(gameState.Board);
+            UpdateButtons();
+        }
+
+        private void DrawBoard(Board board)
+        {
+            for (int row = 0; row < 8; row++)
             {
-                   for(int column = 0; column < 8; column++)
+                for (int col = 0; col < 8; col++)
                 {
-                    Piece piece = board[row, column];
-                    ImageSource imageSource = Images.GetImage(piece);
-                    pieceImages[row, column].Source = imageSource;
-                }   
-            }
-        
-        }
+                    Piece piece = board[row, col];
+                    pieceImages[row, col].Source = Images.GetImage(piece);
 
-        private void CacheMoves(IEnumerable<Move> moves) { 
-        
-            moveCache.Clear();
-            foreach (Move move in moves)
-            {
-                moveCache[move.ToPosition] = move;
+                    // Aktualizuj podświetlenie aktualnej pozycji
+                    var highlight = HighlightGrid.Children[row * 8 + col] as Rectangle;
+                    highlight.Visibility = Visibility.Hidden;
+                }
             }
         }
 
-        private void ShowHighlights()
+        private void UpdateButtons()
         {
-        
-            Color color = Color.FromArgb(150,125,255,125);
-            foreach (Position position in moveCache.Keys)
+            btnPrev.IsEnabled = moveHistory.CanStepBackward;
+            btnNext.IsEnabled = moveHistory.CanStepForward;
+        }
+
+        private void LoadGame(ChessGame game)
+        {
+            try
             {
-                highlights[position.Row, position.Column].Fill = new SolidColorBrush(color);
+                var moves = ParseMoves(game.Moves);
+                moveHistory = new ChessLogic.MoveHistory(Board.Initial());
+
+                foreach (var move in moves)
+                {
+                    moveHistory.AddMove(move);
+                }
+
+                DrawBoard(moveHistory.CurrentBoard);
+                UpdateButtons();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd ładowania gry: {ex.Message}");
             }
         }
 
-        private void HideHighlights()
+        private List<Move> ParseMoves(string moves)
         {
-            foreach (Position position in moveCache.Keys)
+            var result = new List<Move>();
+            string[] moveTokens = moves.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string token in moveTokens)
             {
-                highlights[position.Row, position.Column].Fill = Brushes.Transparent;
+                if (token.Length != 4)
+                {
+                    MessageBox.Show($"Nieprawidłowy format ruchu: {token}");
+                    continue;
+                }
+
+                string fromStr = token.Substring(0, 2);
+                string toStr = token.Substring(2, 2);
+
+                if (Position.TryParse(fromStr, out Position from) && Position.TryParse(toStr, out Position to))
+                {
+                    result.Add(new NormalMove(from, to));
+                }
+                else
+                {
+                    MessageBox.Show($"Nie udało się przetworzyć ruchu: {token}");
+                }
             }
-        }
-        private Position ToSquarePosition(Point point)
-        {
-            double squareSize = BoardGrid.ActualWidth / 8;
-
-            int row = (int)(point.Y / squareSize);
-            int column = (int)(point.X / squareSize);
-
-            return new Position(row, column);
+            return result;
         }
 
         private void BoardGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Point point = e.GetPosition(BoardGrid);
-            Position position = ToSquarePosition(point);
-
-            if(selectedPosition == null)
+            // Logika obsługi kliknięć
+        }
+        private void LoadGameMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var historyWindow = new GameHistoryWindow();
+            if (historyWindow.ShowDialog() == true && historyWindow.SelectedGame != null)
             {
-                OnFromPosotionSelected(position);
-            }
-            else
-            {
-                OnToPosotionSelected(position);
-
+                LoadGame(historyWindow.SelectedGame);
             }
         }
-
-        private void OnFromPosotionSelected(Position position)
+        private void PrevMoveButton_Click(object sender, RoutedEventArgs e)
         {
-            IEnumerable<Move> moves = gameState.LegalMovesForPieces(position);
-
-            if (moves.Any())
-            {
-                selectedPosition = position;
-                CacheMoves(moves);
-                ShowHighlights();
-            }
+            moveHistory.StepBackward();
+            DrawBoard(moveHistory.CurrentBoard);
+            UpdateButtons();
         }
 
-        private void OnToPosotionSelected(Position position)
+        private void NextMoveButton_Click(object sender, RoutedEventArgs e)
         {
-            
-            selectedPosition = null;
-            HideHighlights();
-
-            if (moveCache.TryGetValue(position,out Move move))
-            {
-                HandleMove(move);
-            }
-        }
-
-        private void HandleMove(Move move)
-        {
-            gameState.MakeMove(move);
-            DrawBoard(gameState.Board);
-            SetCursor(gameState.CurrentPalyer);
-        }
-
-        private void SetCursor(Player player)
-        {
-            Cursor = player == Player.White ? ChessCursors.WhiteCursor : ChessCursors.BlackCursor;
+            moveHistory.StepForward();
+            DrawBoard(moveHistory.CurrentBoard);
+            UpdateButtons();
         }
     }
 }

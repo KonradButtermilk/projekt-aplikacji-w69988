@@ -5,37 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessUI"
         mc:Ignorable="d"
-        Title="Chess Game"  Width="800" SizeToContent="Height"
+        Title="Chess Game"  
+        Width="800" 
+        SizeToContent="Height"
         Icon="Assets/icon.ico"
         WindowStartupLocation="CenterScreen"
         Background="#101010">
-    <Viewbox>
-        <Grid x:Name="BoardGrid"
-                Width="800"
-              Height="800"
-              MouseDown="BoardGrid_MouseDown">
 
-            <Grid.Background>
-                <ImageBrush ImageSource="Assets/Board.png"/>
-            </Grid.Background>
+    <Window.Resources>
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <!-- Styl pozostaje bez zmian -->
+        </Style>
+    </Window.Resources>
 
-            <UniformGrid x:Name="HighlightGrid"
-                         Rows="8"
-                         Columns="8"
-                         >
-                
-            </UniformGrid>
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Plik">
+                <MenuItem Header="Wczytaj partię" Click="LoadGameMenuItem_Click"/>
+            </MenuItem>
+        </Menu>
 
-            <!--//This is where the pieces will be placed-->
-            <UniformGrid x:Name="PieceGrid"
-                         Rows="8"
-                            Columns="8"
-                         RenderOptions.BitmapScalingMode="HighQuality">
+        <Viewbox DockPanel.Dock="Top">
+            <Grid x:Name="BoardGrid" Width="800" Height="800" MouseDown="BoardGrid_MouseDown">
+                <Grid.Background>
+                    <ImageBrush ImageSource="Assets/Board.png"/>
+                </Grid.Background>
 
-            </UniformGrid>
-        </Grid>
+                <UniformGrid x:Name="HighlightGrid" Rows="8" Columns="8"/>
+                <UniformGrid x:Name="PieceGrid" Rows="8" Columns="8" 
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+            </Grid>
+        </Viewbox>
 
-    </Viewbox>
-
-
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" 
+                    HorizontalAlignment="Center" Margin="0 20">
+            <Button x:Name="btnPrev" Content="⮜ Poprzedni" 
+                    Click="PrevMoveButton_Click"
+                    Style="{StaticResource RoundedButtonStyle}"
+                    MinWidth="120" Margin="5"/>
+            <Button x:Name="btnNext" Content="Następny ⮞" 
+                    Click="NextMoveButton_Click"
+                    Style="{StaticResource RoundedButtonStyle}"
+                    MinWidth="120" Margin="5"/>
+        </StackPanel>
+    </DockPanel>
 </Window>

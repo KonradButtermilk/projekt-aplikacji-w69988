@@ -1,6 +1,4 @@
-﻿using ChessLogic.Pieces;
-
-namespace ChessLogic.Moves
+﻿namespace ChessLogic
 {
     public class NormalMove : Move
     {

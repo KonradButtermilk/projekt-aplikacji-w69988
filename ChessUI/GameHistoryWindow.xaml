@@ -1,0 +1,23 @@
+﻿<Window x:Class="ChessUI.GameHistoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Historia partii" 
+        Height="450" 
+        Width="800"
+        WindowStartupLocation="CenterOwner">
+
+    <Grid>
+        <DataGrid x:Name="gamesDataGrid" 
+                AutoGenerateColumns="False" 
+                IsReadOnly="True"
+                MouseDoubleClick="DataGrid_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                <DataGridTextColumn Header="Data" Binding="{Binding GameDate,StringFormat=dd/MM/yyyy}" Width="120"/>
+                <DataGridTextColumn Header="Biały" Binding="{Binding WhitePlayer}" Width="150"/>
+                <DataGridTextColumn Header="Czarny" Binding="{Binding BlackPlayer}" Width="150"/>
+                <DataGridTextColumn Header="Wynik" Binding="{Binding Result}" Width="80"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

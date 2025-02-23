@@ -1,6 +1,4 @@
-﻿using ChessLogic.Moves;
-
-namespace ChessLogic.Pieces
+﻿namespace ChessLogic
 {
     public class Queen: Piece
     {
@@ -31,9 +29,17 @@ namespace ChessLogic.Pieces
             return copy;
         }
 
-        public override IEnumerable<Move> GetMoves(Position fromPosition, Board board)
+        public override Piece Clone()
         {
-            return MovePositionInDirections(fromPosition, board, directions).Select(toPosition => new NormalMove(fromPosition, toPosition));
+            Queen clone = new Queen(Color);
+            clone.HasMoved = HasMoved;
+            return clone;
+        }
+
+        public override IEnumerable<Move> GetMoves(Position from, Board board)
+        {
+            return MovePositionInDirections(from, board, directions)
+                .Select(to => new NormalMove(from, to));
         }
     }
 }

@@ -1,17 +1,17 @@
-﻿using ChessLogic.Moves;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChessLogic.Pieces
+namespace ChessLogic
 {
     public abstract class Piece
     {
         public abstract PieceType Type { get; }
         public abstract Player Color { get; }
         public bool HasMoved { get; set; } = false;
+        public abstract Piece Clone();
         public abstract Piece Copy();
 
         public abstract IEnumerable<Move> GetMoves( Position fromPosition, Board board);
@@ -21,7 +21,7 @@ namespace ChessLogic.Pieces
 
             for (Position position = from + direction; Board.IsInside(position); position += direction) {
 
-                if (board.IsEmpty(position))
+                if (Board.IsEmpty(board, position))
                 {
                     yield return position;
                     continue;

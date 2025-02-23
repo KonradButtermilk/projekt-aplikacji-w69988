@@ -1,42 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessLogic
+﻿namespace ChessLogic
 {
-    public class Direction
+    public readonly struct Direction
     {
-        //These are static fields, they are like properties but they are shared by all instances of the class
-        public readonly static Direction North = new Direction(-1, 0);
-        public readonly static Direction South = new Direction(1, 0);
-        public readonly static Direction East = new Direction(0, 1);
-        public readonly static Direction West = new Direction(0, -1);
-        //Diagonals directions
-        public readonly static Direction NorthEast = North + East;
-        public readonly static Direction NorthWest = North + West;
-        public readonly static Direction SouthEast = South + East;
-        public readonly static Direction SouthWest = South + West;
+        public int DeltaRow { get; }
+        public int DeltaColumn { get; }
 
-        public int RowDelta { get; set; }
-        public int ColumnDelta { get; set; }
-
-        public Direction(int rowDelta, int columnDelta)
+        public Direction(int deltaRow, int deltaColumn)
         {
-            RowDelta = rowDelta;
-            ColumnDelta = columnDelta;
+            DeltaRow = deltaRow;
+            DeltaColumn = deltaColumn;
         }
 
-        public static Direction operator +(Direction dir1, Direction dir2)
-        {
-            return new Direction(dir1.RowDelta + dir2.RowDelta, dir1.ColumnDelta + dir2.ColumnDelta);
-        }
+        public static readonly Direction North = new(-1, 0);
+        public static readonly Direction South = new(1, 0);
+        public static readonly Direction East = new(0, 1);
+        public static readonly Direction West = new(0, -1);
+        public static readonly Direction NorthEast = North + East;
+        public static readonly Direction NorthWest = North + West;
+        public static readonly Direction SouthEast = South + East;
+        public static readonly Direction SouthWest = South + West;
 
-        public static Direction operator *(int scalar , Direction dir)
+        public static Direction operator +(Direction a, Direction b)
         {
-            return new Direction(scalar * dir.RowDelta, scalar * dir.ColumnDelta);
+            return new Direction(
+                a.DeltaRow + b.DeltaRow,
+                a.DeltaColumn + b.DeltaColumn
+            );
         }
-
     }
 }

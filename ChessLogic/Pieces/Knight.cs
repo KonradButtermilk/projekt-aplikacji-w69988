@@ -1,4 +1,4 @@
-﻿using ChessLogic.Moves;
+﻿using System.Collections.Generic;
 
 namespace ChessLogic.Pieces
 {
@@ -6,6 +6,17 @@ namespace ChessLogic.Pieces
     {
         public override PieceType Type => PieceType.Knight;
         public override Player Color { get; }
+
+        private static readonly Direction[] directions = {
+            new Direction(-2, -1),
+            new Direction(-2, 1),
+            new Direction(-1, -2),
+            new Direction(-1, 2),
+            new Direction(1, -2),
+            new Direction(1, 2),
+            new Direction(2, -1),
+            new Direction(2, 1)
+        };
 
         public Knight(Player color)
         {
@@ -18,28 +29,29 @@ namespace ChessLogic.Pieces
             copy.HasMoved = HasMoved;
             return copy;
         }
-
-        private static IEnumerable<Position> PotencialToPositions(Position from)
+        public override Piece Clone()
         {
-            foreach(Direction verticalDirection in new Direction[] {Direction.North, Direction.South})
+            Knight clone = new Knight(Color);
+            clone.HasMoved = HasMoved;
+            return clone;
+        }
+        private IEnumerable<Position> MovePositions(Position from, Board board)
+        {
+            foreach (Direction dir in directions)
             {
-                foreach(Direction horizontalDirection in new Direction[] {Direction.West, Direction.East})
+                Position to = from + dir;
+                if (Board.IsInside(to) && (Board.IsEmpty(board, to) || board[to].Color != Color))
                 {
-                    yield return from + 2*verticalDirection + horizontalDirection;
-                    yield return from +2* horizontalDirection + verticalDirection;
+                    yield return to;
                 }
             }
         }
-
-        private IEnumerable<Position> MovePositions(Position from, Board board)
-        {
-            return PotencialToPositions(from).Where(positions => Board.IsInside(positions) && (board.IsEmpty(positions) || board[positions].Color != Color));
-        }
-
-
         public override IEnumerable<Move> GetMoves(Position from, Board board)
         {
-            return MovePositions(from, board).Select(to => new NormalMove(from, to));
+            foreach (Position to in MovePositions(from, board))
+            {
+                yield return new NormalMove(from, to);
+            }
         }
     }
 }

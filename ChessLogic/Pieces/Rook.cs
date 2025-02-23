@@ -1,6 +1,4 @@
-﻿using ChessLogic.Moves;
-
-namespace ChessLogic.Pieces
+﻿namespace ChessLogic
 {
     public class Rook : Piece
     {
@@ -30,6 +28,13 @@ namespace ChessLogic.Pieces
         public override IEnumerable<Move> GetMoves(Position fromPosition, Board board)
         {
             return MovePositionInDirections(fromPosition, board, directions).Select(toPosition => new NormalMove(fromPosition, toPosition));
+        }
+
+        public override Piece Clone()
+        {
+            Rook clone = new Rook(Color);
+            clone.HasMoved = HasMoved;
+            return clone;
         }
     }
 }
