@@ -32,7 +32,7 @@
             // Usunięcie figury z pozycji początkowej
             board[FromPosition] = null;
             // Oznaczenie, że figura wykonała ruch
-            piece.HasMoved = true;
+            //piece.HasMoved = true;
         }
     }
 }
